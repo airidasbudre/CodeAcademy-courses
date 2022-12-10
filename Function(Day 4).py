@@ -1,5 +1,6 @@
 # Task 1.1
 
+import copy
 from datetime import timedelta, datetime
 
 
@@ -131,25 +132,50 @@ def count_date():
 
 
 # Task 2.1
+list_of_strings = []
 a = input("Input your personal code: ")
-b = [int(i) for i in a]
-print(b)
-z = int(str(x) + str(y))
-# print(list(map(int, list_string)))
-c = len(b)
 
-if c == 11:
+# Copy with string values
+for i in a:
+    list_of_strings.append(i)
+list_of_strings[3] = list_of_strings[3] + list_of_strings[4]
+list_of_strings[5] = list_of_strings[5] + list_of_strings[6]
+list_of_strings.remove(list_of_strings[4])
+list_of_strings.remove(list_of_strings[5])
+
+#Copy with integers values
+list_of_integers = []
+for i in a:
+    list_of_integers.append(int(i))
+print(list_of_integers)
+
+#Check if the values are correct
+if len(list_of_strings) == 9:
    print(" Lenth OK")
    lenth = True  
-if b[0] <= 6 and b[0] > 0 :
+if int(list_of_strings[0]) <= 6 and int(list_of_strings[0]) > 0 :
    print("first number ok")
-
-   
-   print("month first number ok")
-
+if int(list_of_strings[3]) < 13 and int(list_of_strings[3]) > 0:
+    print("month is ok")
+if int(list_of_strings[4]) < 32 and int(list_of_strings[4]) > 0:
+    print("day is ok")
 else: 
     print("wrong")
 
+#Personal code contral number check
+
+s = list_of_integers[0]*1 + list_of_integers[1]*2 + list_of_integers[2]*3 + list_of_integers[3]*4 + list_of_integers[4]*5 + list_of_integers[5]*6 + list_of_integers[6]*7 + list_of_integers[7]*8 + list_of_integers[8]*9 + list_of_integers[9]*1
+
+if s % 11 != 10:
+    k = s % 11 
+    if k == list_of_integers[10]:
+        print("Personal code is walid")    
+else:
+    s_2 = list_of_integers[0]*3 + list_of_integers[1]*4 + list_of_integers[2]*5 + list_of_integers[3]*6 + list_of_integers[4]*7 + list_of_integers[5]*8 + list_of_integers[6]*9 + list_of_integers[7]*1 + list_of_integers[8]*2 + list_of_integers[9]*3
+    if s_2 == list_of_integers[10]:
+        print("ok")
+    else:
+        print("Personal code not walid!")
 
 
 
