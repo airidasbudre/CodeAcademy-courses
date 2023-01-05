@@ -9,6 +9,7 @@ class Tank():
     
         tank = "\U0001F52B" 
         self.tank = tank
+
         dot = " -"
         self.dot = dot
 
@@ -23,31 +24,49 @@ class Tank():
 
 
     def move_north(self):
+        if self.tank_y < 1:
+                print("Cant move there!")  
+        else:  
+            self.tank_y -= 1
+        
+    def move_east(self):
+        if self.tank_x > 9:
+                print("Cant move there!")  
+        else:  
+            self.tank_x += 1
+
+    def move_south(self):
+        if self.tank_y > 9:
+                print("Cant move there!")  
+        else:  
+            self.tank_y += 1
+
+    def move_west(self):
         if self.tank_x < 1:
                 print("Cant move there!")  
         else:  
-            return self.tank_x - 1
-        
-    def move_east(self):
-        return self.tank_y + 1
-
-    def move_south(self):
-        return self.tank_x + 1
-
-    def move_west(self):
-        return self.tank_y - 1
+            self.tank_x -= 1
         
     def shot(self):
-        
-        # if self.shot_direction == "w":
-        #     self.west += 1 
-        # elif self.shot_direction == "n":
-        #     self.north += 1 
-        # elif self.shot_direction == "s":
-        #     self.south += 1 
-        # elif self.shot_direction == "e":
-        #     self.east += 1 
+        west = 0
+        self.west = west
+        north = 0
+        self.north = north
+        south = 0
+        self.south = south
+        east = 0
+        self.east = east 
+
+        if self.decision == "w":
+            self.west += 1 
+        elif self.decision == "n":
+            self.north += 1 
+        elif self.decision == "s":
+            self.south += 1 
+        elif self.decision == "e":
+            self.east += 1 
         print("Shot!")
+        print(self.east)
     
     def info(self):
         tank_x = self.tank_x 
@@ -63,20 +82,21 @@ class Tank():
         print(f"Coordinates x:{tank_x}, y:{tank_y}. Direction:{shot_direction}. )")
         
     def grid(self):
-        
+        print(self.tank_x)
+        print(self.tank_y)
         tank = "\U0001F52B"   
         dot = " -"
-        x = 11
-        y = [dot, dot, dot, dot, dot, dot, dot, dot, dot, dot, dot]
-        yy = y.copy()
+        y = 11
+        x = [dot, dot, dot, dot, dot, dot, dot, dot, dot, dot, dot]
+        xx = x.copy()
 
-        for i in range(x):
-            if i == self.tank_x:
-                yy[self.tank_y] = tank
-                for i in yy:
+        for i in range(y):
+            if i == self.tank_y:
+                xx[self.tank_x] = tank
+                for i in xx:
                     print(i, end=" ")
                 print()
             else:
-                for i in y:
+                for i in x:
                     print(i, end=" ")
                 print()
