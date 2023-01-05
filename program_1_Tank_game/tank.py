@@ -1,89 +1,63 @@
 class Tank():
-    def __init__(self, decision):
+    def __init__(self):
+        self.tank_x = 5
+        self.tank_y = 5
 
-        tank_y = 5
-        tank_x = 5
-        self.tank_x = tank_x
-        self.tank_y = tank_y
-
+        self.west = 0
+        self.north = 0
+        self.south = 0
+        self.east = 0
     
-        tank = "\U0001F52B" 
-        self.tank = tank
+        self.tank = "\U0001F52B" 
 
-        dot = " -"
-        self.dot = dot
+        self.dot = " -"
 
-        self.decision = decision
-        shot_direction = "w"
-        self.shot_direction = shot_direction
-        
-        if self.decision == "n" or self.decision == "w" or self.decision == "e" or self.decision == "s":
-            shot_direction = self.decision
-            print(f"{shot_direction}")
-        
-
+        self.shot_direction = "w"
 
     def move_north(self):
         if self.tank_y < 1:
                 print("Cant move there!")  
         else:  
             self.tank_y -= 1
+            self.shot_direction = "n"
         
     def move_east(self):
         if self.tank_x > 9:
                 print("Cant move there!")  
         else:  
             self.tank_x += 1
+            self.shot_direction = "e"
 
     def move_south(self):
         if self.tank_y > 9:
                 print("Cant move there!")  
         else:  
             self.tank_y += 1
+            self.shot_direction = "s"
 
     def move_west(self):
         if self.tank_x < 1:
                 print("Cant move there!")  
         else:  
             self.tank_x -= 1
+            self.shot_direction = "w"
         
     def shot(self):
-        west = 0
-        self.west = west
-        north = 0
-        self.north = north
-        south = 0
-        self.south = south
-        east = 0
-        self.east = east 
 
-        if self.decision == "w":
+        if self.shot_direction == "w":
             self.west += 1 
-        elif self.decision == "n":
+        elif self.shot_direction == "n":
             self.north += 1 
-        elif self.decision == "s":
+        elif self.shot_direction == "s":
             self.south += 1 
-        elif self.decision == "e":
+        elif self.shot_direction == "e":
             self.east += 1 
         print("Shot!")
-        print(self.east)
     
     def info(self):
-        tank_x = self.tank_x 
-        tank_y = self.tank_y
-      
-        shot_direction = "w"
-        # self.shot_direction = shot_direction
-        if self.decision == "e" or self.decision == "w" or self.decision == "e" or self.decision == "s":
-            shot_direction = self.decision
-            print("yella2")
-        else:
-            print("no")
-        print(f"Coordinates x:{tank_x}, y:{tank_y}. Direction:{shot_direction}. )")
+        print(f"Coordinates x:{self.tank_x}, y:{self.tank_y}. Direction:{self.shot_direction}.Shots: n-{self.north}, e-{self.east}, s-{self.south}, w-{self.west} )")
         
     def grid(self):
-        print(self.tank_x)
-        print(self.tank_y)
         tank = "\U0001F52B"   
         dot = " -"
         y = 11
