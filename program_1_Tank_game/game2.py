@@ -2,8 +2,7 @@ from random import randint
 from tank import Tank
 
 
-decision = None
-tankas = Tank(decision)
+tankas = Tank()
 
 while True:
     decision = input("Whats next? ")
@@ -21,9 +20,7 @@ while True:
         elif decision == "e":
             tankas.move_east()
         elif decision == "q":
-            tankas.shot()
-            
+            tankas.shot()    
         else:
             print("Wrong command")
     tankas.grid()
-    
