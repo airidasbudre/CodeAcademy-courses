@@ -91,11 +91,10 @@ class Tank():
     def info(self):
         y_list = []
         for i in range(11):
-            y_list.append(i+1)
-        # y_list.sort(reverse=True)
+            y_list.append(i)
         print(y_list)
 
-        print(f"Coordinates x:{self.tank_x + 1}, y:{(y_list[-self.tank_y]) - 1}. Direction:{self.shot_direction}. Shots: n-{self.north}, e-{self.east}, s-{self.south}, w-{self.west}, total shots-{self.east + self.west + self.north + self.south}, points-{self.points} )")
+        print(f"Coordinates x:{self.tank_x + 1}, y:{(y_list[-self.tank_y])}. Direction:{self.shot_direction}. Shots: n-{self.north}, e-{self.east}, s-{self.south}, w-{self.west}, total shots-{self.east + self.west + self.north + self.south}, points-{self.points} )")
         
     def grid(self):
         tank = "\U0001F52B"   
