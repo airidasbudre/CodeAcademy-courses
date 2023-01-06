@@ -1,11 +1,12 @@
-from random import randint
 from tank import Tank
 
 
 tankas = Tank()
 
+
+tankas.grid()
 while True:
-    decision = input("Whats next? ")
+    decision = input("Whats next? Moves: w, e, n, s. Turn off: off. Information: info: ")
     if decision == "off":
         break
     elif decision == "info":
