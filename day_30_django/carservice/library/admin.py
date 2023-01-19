@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Car_model, Service, Order, Cars, Orderline
+from .models import Car_model, Service, Order, Cars, Orderline, Employees
 
 
 class OrderAdmin(admin.ModelAdmin):
@@ -11,6 +11,9 @@ class CarsAdmin(admin.ModelAdmin):
     list_filter = ('car_model', 'client')
     search_fields = ('license_plate', 'client')
 
+class EmployeesAdmin(admin.ModelAdmin):
+    list_display = ('e_name', 'e_surname', 'position')
+
 # class OrderAdmin(admin.ModelAdmin):
 #     list_display = ('date', 'cars', 'amount')
 #     search_fields = ('cars', 'date') 
@@ -20,3 +23,4 @@ admin.site.register(Service)
 admin.site.register(Order, OrderAdmin)
 admin.site.register(Cars, CarsAdmin)
 admin.site.register(Orderline)
+admin.site.register(Employees, EmployeesAdmin)

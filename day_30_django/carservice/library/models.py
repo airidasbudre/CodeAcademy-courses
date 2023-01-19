@@ -52,6 +52,22 @@ class Order(models.Model):
     cars = models.ForeignKey('Cars', on_delete=models.SET_NULL, null=True)
     amount = models.CharField('Amount', max_length=200)
 
+
+    LOAN_STATUS = (
+        ('a', 'Administruojama'),
+        ('p', 'Paimta'),
+        ('g', 'Galima paimti'),
+        ('r', 'Rezervuota'),
+    )
+
+    status = models.CharField(
+        max_length=1,
+        choices=LOAN_STATUS,
+        blank=True,
+        default='p',
+        help_text='Statusas',)
+
+
     def __str__(self):
         return f'{self.date} {self.cars}'
 
@@ -72,3 +88,12 @@ class Orderline(models.Model):
     class Meta:
         verbose_name = 'Orderline'
         verbose_name_plural = 'Orderlines'
+
+class Employees(models.Model):
+    e_name = models.CharField('E_name', max_length=200)
+    e_surname = models.CharField('E_surname', max_length=200)
+    position = models.CharField('Position', max_length=200)
+
+    def __str__(self):
+        return f'{self.e_name}, {self.e_surname}, {self.position}'
+
