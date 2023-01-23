@@ -1,7 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from .models import Car_model, Service, Order, Cars, Orderline, Employees
 from django.views import generic
+
 
 
 def index(request):
@@ -21,11 +22,23 @@ def cars(request):
     
     cars = Cars.objects.all()
     context = {
-        'cars': cars
+        'cars': cars,
     }
-    print(cars)
     return render(request, 'cars.html', context=context)
 
 class ServiceListView(generic.ListView):
     model = Service
     template_name = 'service.html'
+    context_object_name = "service"
+
+def car(request, car_id):
+    car = get_object_or_404(Cars, pk=car_id)
+    context = {
+        'car': car,
+    }
+    return render(request, 'car.html', context=context)
+
+class EmployeesListView(generic.ListView):
+    model = Employees
+    template_name = 'employees.html'
+    context_object_name = "employees"

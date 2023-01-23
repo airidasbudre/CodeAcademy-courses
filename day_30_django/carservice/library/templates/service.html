@@ -1,16 +1,9 @@
 {% extends "base.html" %}
+{% block title %}Užsakymai{% endblock %}
 
 {% block content %}
-  <h1>Cars list</h1>
-  {% if car_list %}
-  <ul>
-    {% for car in car_list %}
-      <li>
-        <a href="{{ car.id }}">{{ car.brand }}</a> ({{car.model}})
-      </li>
-    {% endfor %}
-  </ul>
-  {% else %}
-    <p>There is no cars.</p>
-  {% endif %}
+{% for service in service %}
+<hr>
+<p>{{ service }}</p>
+{% endfor %}
 {% endblock %}
