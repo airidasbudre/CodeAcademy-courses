@@ -3,8 +3,18 @@ from .models import Car_model, Service, Order, Cars, Orderline, Employees
 
 
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('date', 'cars', 'amount')
-    search_fields = ('cars', 'date')
+    list_display = ('date', 'cars', 'amount', 'reader')
+    search_fields = ('cars', 'date', 'reader')
+
+    fieldsets = (
+        (None, {
+            'fields': ('book', 'id')
+        }),
+        ('Availability', {
+            'fields': ('status', 'due_back', 'reader')
+        }),
+    )
+    
 
 class CarsAdmin(admin.ModelAdmin):
     list_display = ('license_plate', 'car_model', 'client', 'vin_code')

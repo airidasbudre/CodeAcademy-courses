@@ -1,5 +1,7 @@
 from django.db import models
 from django.urls import reverse
+from django.contrib.auth.models import User
+from datetime import date
 
 
 class Service(models.Model):
@@ -48,9 +50,16 @@ class Cars(models.Model):
         verbose_name_plural = 'Cars'
 
 class Order(models.Model):
-    date = models.DateField('Order_date', null=True, blank=True)
+    date = models.DateTimeField(verbose_name="Date", auto_now_add=True)
     cars = models.ForeignKey('Cars', on_delete=models.SET_NULL, null=True)
-    amount = models.CharField('Amount', max_length=200)
+    # amount = models.CharField('Amount', max_length=200)
+    reader = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+
+    @property
+    def is_overdue(self):
+        if self.due_back and date.today() > self.due_back:
+            return True
+        return False
 
 
     LOAN_STATUS = (
@@ -67,23 +76,31 @@ class Order(models.Model):
         default='p',
         help_text='Statusas',)
 
+    def amount(self):
+        amount = 0
+        lines = self.lines.all()
+        for line in lines:
+            amount += line.price()
+        return amount
 
     def __str__(self):
-        return f'{self.date} {self.cars}'
+        return f'{self.cars} ({self.date})'
 
     class Meta:
         verbose_name = 'Order'
         verbose_name_plural = 'Orders'
 
 class Orderline(models.Model):
-    service = models.ForeignKey('Service', on_delete=models.SET_NULL, null=True)
+    service = models.ForeignKey('Service', on_delete=models.CASCADE, null=True, related_name="lines")
     order = models.ForeignKey('Order', on_delete=models.SET_NULL, null=True)
     quantity = models.CharField('Quantity', max_length=200)
-    price = models.CharField('Price', max_length=200)
     
-    def __str__(self):
-        return f'{self.order.date}, {self.service}, {self.quantity}'
+    
+    def price(self):
+        return self.service.kaina * self.amount
 
+    def __str__(self):
+        return f'{self.order.date}, {self.service} ({self.quantity})'
 
     class Meta:
         verbose_name = 'Orderline'
