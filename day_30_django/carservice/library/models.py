@@ -52,7 +52,7 @@ class Cars(models.Model):
 class Order(models.Model):
     date = models.DateTimeField(verbose_name="Date", auto_now_add=True)
     cars = models.ForeignKey('Cars', on_delete=models.SET_NULL, null=True)
-    # amount = models.CharField('Amount', max_length=200)
+    amount = models.CharField('Amount', max_length=200)
     reader = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
 
     @property
@@ -91,13 +91,13 @@ class Order(models.Model):
         verbose_name_plural = 'Orders'
 
 class Orderline(models.Model):
-    service = models.ForeignKey('Service', on_delete=models.CASCADE, null=True, related_name="lines")
-    order = models.ForeignKey('Order', on_delete=models.SET_NULL, null=True)
-    quantity = models.CharField('Quantity', max_length=200)
+    service = models.ForeignKey('Service', on_delete=models.SET_NULL, null=True)
+    order = models.ForeignKey('Order', on_delete=models.CASCADE, null=True, related_name="lines")
+    quantity = models.IntegerField('Quantity')
     
     
     def price(self):
-        return self.service.kaina * self.amount
+        return self.service.price * self.quantity
 
     def __str__(self):
         return f'{self.order.date}, {self.service} ({self.quantity})'
