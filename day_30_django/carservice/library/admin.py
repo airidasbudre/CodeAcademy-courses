@@ -8,7 +8,7 @@ class OrderAdmin(admin.ModelAdmin):
 
     fieldsets = (
         (None, {
-            'fields': ('book', 'id')
+            'fields': ('cars', 'date')
         }),
         ('Availability', {
             'fields': ('status', 'due_back', 'reader')

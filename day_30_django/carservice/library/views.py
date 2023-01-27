@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from .models import Car_model, Service, Order, Cars, Orderline, Employees
 from django.views import generic
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 
@@ -45,3 +46,12 @@ class EmployeesListView(generic.ListView):
     model = Employees
     template_name = 'employees.html'
     context_object_name = "employees"
+
+
+class LoanedBooksByUserListView(LoginRequiredMixin,generic.ListView):
+    model = Order
+    template_name ='user_orders.html'
+    paginate_by = 10
+    
+    def get_queryset(self):
+        return Order.objects.filter(reader=self.request.user).filter(status__exact='p').order_by('due_back')
