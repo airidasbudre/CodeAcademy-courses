@@ -5,8 +5,8 @@ class Project(models.Model):
     start_date = models.DateField('Start date', null=True, blank=True)
     end_date = models.DateField('End date', null=True, blank=True)
     client = models.ForeignKey('Client', on_delete=models.SET_NULL, null=True)
-    project_manager = models.ForeignKey('Project manager', on_delete=models.SET_NULL, null=True)
-    employees = models.ForeignKey('Employees', on_delete=models.SET_NULL, null=True)
+    # project_manager = models.ForeignKey('Project manager', on_delete=models.SET_NULL, null=True)
+    employee = models.ForeignKey('Employee', on_delete=models.SET_NULL, null=True)
     work = models.ForeignKey('Work', on_delete=models.SET_NULL, null=True)
     invoice = models.ForeignKey('Invoice', on_delete=models.SET_NULL, null=True)
 
@@ -18,7 +18,7 @@ class Client(models.Model):
     surname = models.CharField('Surname', max_length=200)
     company = models.CharField('Company', max_length=200)
     email = models.CharField('Email', max_length=200)
-    phone = models.IntegerField('Phone', max_length=11)
+    phone = models.IntegerField('Phone')
 
     def __str__(self):
         return f'{self.name} {self.surname} {self.company}'
