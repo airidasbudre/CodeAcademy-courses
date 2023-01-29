@@ -1,4 +1,6 @@
 from django.db import models
+from import_export.admin import ImportExportModelAdmin
+from django.contrib import admin
 
 class Project(models.Model):
     p_name = models.CharField('Project Name', max_length=200)
@@ -18,7 +20,7 @@ class Client(models.Model):
     surname = models.CharField('Surname', max_length=200)
     company = models.CharField('Company', max_length=200)
     email = models.CharField('Email', max_length=200)
-    phone = models.IntegerField('Phone')
+    phone = models.CharField('Phone', max_length=200)
 
     def __str__(self):
         return f'{self.name} {self.surname} {self.company}'
@@ -35,3 +37,6 @@ class Work(models.Model):
 class Invoice(models.Model):
     formating_date = models.DateField('Formating Date', null=True, blank=True)
     amount = models.FloatField('Amount', max_length=11)
+
+class ClientAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    pass           
