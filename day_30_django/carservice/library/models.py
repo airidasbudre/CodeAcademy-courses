@@ -2,11 +2,17 @@ from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import User
 from datetime import date
+import datetime
+import pytz
+from tinymce.models import HTMLField
+
+utc = pytz.UTC
 
 
 class Service(models.Model):
-    name = models.CharField('Name', max_length=200, help_text='Įveskite paslaugos pavadinimą')
+    name = models.CharField('Name', max_length=200)
     price = models.FloatField('Price')
+
 
     def __str__(self):
         return self.name
@@ -24,10 +30,6 @@ class Car_model(models.Model):
     def __str__(self):
         return f"{self.brand} {self.model}"
 
-    def get_absolute_url(self):
-        """Returns the url to access a particular author instance."""
-        return reverse('car-detail', args=[str(self.id)])
-
     class Meta:
         verbose_name = 'Car model'
         verbose_name_plural = 'Car models'
@@ -37,9 +39,11 @@ class Cars(models.Model):
     car_model = models.ForeignKey('Car_model', on_delete=models.SET_NULL, null=True)
     client = models.CharField('Client', max_length=200)
     vin_code = models.CharField('Vin_code', max_length=200)
+    photo = models.ImageField('Nuotrauka', upload_to='automobiliai', null=True)
+    description = HTMLField(verbose_name="Aprašymas", null=True, blank=True)
 
     def __str__(self):
-        return f'{self.license_plate} {self.car_model} {self.client}'
+        return f'{self.license_plate} {self.car_model}'
 
     def get_absolute_url(self):
         """Returns the url to access a particular author instance."""
@@ -50,23 +54,22 @@ class Cars(models.Model):
         verbose_name_plural = 'Cars'
 
 class Order(models.Model):
-    date = models.DateTimeField(verbose_name="Date", auto_now_add=True)
-    cars = models.ForeignKey('Cars', on_delete=models.SET_NULL, null=True)
-    amount = models.CharField('Amount', max_length=200)
-    reader = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    date = models.DateTimeField("Date", auto_now_add=True)
+    duration = models.DateTimeField("Duration", null=True)
+    cars = models.ForeignKey("Cars", on_delete=models.CASCADE)
+    user = models.ForeignKey(to=User, verbose_name="User", on_delete=models.SET_NULL, null=True, blank=True)
 
-    @property
-    def is_overdue(self):
-        if self.due_back and date.today() > self.due_back:
-            return True
-        return False
-
+    def is_it_overdue(self):
+        if self.duration:
+            return self.duration.replace(tzinfo=utc) < datetime.datetime.today().replace(tzinfo=utc)
+        else:
+            return False
 
     LOAN_STATUS = (
-        ('a', 'Administruojama'),
-        ('p', 'Paimta'),
-        ('g', 'Galima paimti'),
-        ('r', 'Rezervuota'),
+        ('p', 'Patvirtinta'),
+        ('v', 'Vykdoma'),
+        ('a', 'Atšaukta'),
+        ('i', 'Įvykdyta'),
     )
 
     status = models.CharField(
@@ -84,7 +87,7 @@ class Order(models.Model):
         return amount
 
     def __str__(self):
-        return f'{self.cars} ({self.date})'
+        return f'{self.cars} ({self.duration})'
 
     class Meta:
         verbose_name = 'Order'
@@ -113,4 +116,11 @@ class Employees(models.Model):
 
     def __str__(self):
         return f'{self.e_name}, {self.e_surname}, {self.position}'
+    
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    image = models.ImageField(default="default.png", upload_to="profile_pics")
+
+    def __str__(self):
+        return f"{self.user.username} profile"
 

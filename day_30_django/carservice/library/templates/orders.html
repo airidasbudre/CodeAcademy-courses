@@ -1,11 +1,10 @@
 {% extends "base.html" %}
-{% block title %}My Orders{% endblock %}
+{% block title %}Užsakymai{% endblock %}
 
 {% block content %}
-<h1>My Orders:</h1>
 {% for order in orders %}
 <hr>
-<p><a class="{% if order.is_it_overdue %}text-danger{% endif %}" href="{% url 'order' order.pk %}">{{ order }}</a></p>
+<p><a href="{{ order.pk }}">{{ order }}</a></p>
 {% endfor %}
 <div class="pagination">
     <span class="step-links">
