@@ -1,10 +1,10 @@
 from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import User
-from datetime import date
 import datetime
 import pytz
 from tinymce.models import HTMLField
+from PIL import Image
 
 utc = pytz.UTC
 
@@ -25,7 +25,7 @@ class Service(models.Model):
 class Car_model(models.Model):
     brand = models.CharField('Brand_name', max_length=200, help_text='Brand name')
     model = models.CharField('Model', max_length=200, help_text='Model name')
-    due_back = models.DateField('Year of made', null=True, blank=True)
+    # due_back = models.DateField('Year of made', null=True, blank=True)
 
     def __str__(self):
         return f"{self.brand} {self.model}"
@@ -39,15 +39,15 @@ class Cars(models.Model):
     car_model = models.ForeignKey('Car_model', on_delete=models.SET_NULL, null=True)
     client = models.CharField('Client', max_length=200)
     vin_code = models.CharField('Vin_code', max_length=200)
-    photo = models.ImageField('Nuotrauka', upload_to='automobiliai', null=True)
-    description = HTMLField(verbose_name="Aprašymas", null=True, blank=True)
+    photo = models.ImageField('Photo', upload_to='cars', null=True)
+    description = HTMLField(verbose_name="description", null=True, blank=True)
 
     def __str__(self):
         return f'{self.license_plate} {self.car_model}'
 
-    def get_absolute_url(self):
-        """Returns the url to access a particular author instance."""
-        return reverse('cars', args=[str(self.id)])
+    # def get_absolute_url(self):
+    #     """Returns the url to access a particular author instance."""
+    #     return reverse('cars', args=[str(self.id)])
 
     class Meta:
         verbose_name = 'Car'
@@ -92,6 +92,7 @@ class Order(models.Model):
     class Meta:
         verbose_name = 'Order'
         verbose_name_plural = 'Orders'
+        ordering = ['-date']
 
 class Orderline(models.Model):
     service = models.ForeignKey('Service', on_delete=models.SET_NULL, null=True)
@@ -109,6 +110,17 @@ class Orderline(models.Model):
         verbose_name = 'Orderline'
         verbose_name_plural = 'Orderlines'
 
+class Comment(models.Model):
+    order = models.ForeignKey(to="Order", verbose_name="Order", on_delete=models.CASCADE, null=True, blank=True, related_name="comments")
+    user = models.ForeignKey(to=User, verbose_name="User", on_delete=models.CASCADE, null=True, blank=True)
+    date_created = models.DateTimeField(auto_now_add=True)
+    text = models.TextField(verbose_name="Text", max_length=1000)
+
+    class Meta:
+        verbose_name = 'Comment'
+        verbose_name_plural = 'Comments'
+        ordering = ['-date_created']
+
 class Employees(models.Model):
     e_name = models.CharField('E_name', max_length=200)
     e_surname = models.CharField('E_surname', max_length=200)
@@ -123,4 +135,12 @@ class Profile(models.Model):
 
     def __str__(self):
         return f"{self.user.username} profile"
+    
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        img = Image.open(self.image.path)
+        if img.height > 300 or img.width > 300:
+            output_size = (300, 300)
+            img.thumbnail(output_size)
+            img.save(self.image.path)
 

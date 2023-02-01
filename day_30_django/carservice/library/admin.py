@@ -14,14 +14,14 @@ class OrderAdmin(admin.ModelAdmin):
     list_display = ('date', 'cars', 'amount', 'duration', 'user')
     inlines = [OrderlineInLine]
 
-    fieldsets = (
-        (None, {
-            'fields': ('cars', 'date')
-        }),
-        ('Availability', {
-            'fields': ('status', 'due_back', 'reader')
-        }),
-    )
+    # fieldsets = (
+    #     (None, {
+    #         'fields': ('cars', 'date')
+    #     }),
+    #     ('Availability', {
+    #         'fields': ('status', 'due_back', 'reader')
+    #     }),
+    # )
     
 
 class CarsAdmin(admin.ModelAdmin):
