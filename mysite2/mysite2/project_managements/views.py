@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Client, Employee, Project, Work, Invoice
 
+
 def index(request):
     num_projects = Project.objects.all().count()
     num_works = Work.objects.all().count()
@@ -18,4 +19,5 @@ def index(request):
     # renderiname index.html, su duomenimis kintamąjame context
     return render(request, 'index.html', context=context)
 
-    
+def home(request):
+    return render(request, 'base.html')
