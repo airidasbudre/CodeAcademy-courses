@@ -1,6 +1,9 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Client, Employee, Project, Work, Invoice
+from django.views import generic
+from django.views import View
+
 
 
 def index(request):
@@ -19,5 +22,11 @@ def index(request):
     # renderiname index.html, su duomenimis kintamąjame context
     return render(request, 'index.html', context=context)
 
-def home(request):
-    return render(request, 'base.html')
+class HomePageView(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'base.html')
+
+class ProjectsView(View):
+    def get(self, request, *args, **kwargs):
+        projects = Project.objects.all()
+        return render(request, 'home/projects.html', {'projects': projects})
