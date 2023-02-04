@@ -2,6 +2,12 @@ from django.db import models
 from import_export.admin import ImportExportModelAdmin
 from django.contrib import admin
 
+from django.contrib.auth.models import User
+from django.db import models
+
+
+# Data models
+# --------------------------------------------------------------------------
 class Project(models.Model):
     p_name = models.CharField('Project Name', max_length=200)
     start_date = models.DateField('Start date', null=True, blank=True)
@@ -26,9 +32,10 @@ class Client(models.Model):
         return f'{self.name} {self.surname} {self.company}'
     
 class Employee(models.Model):
-    name = models.CharField('Name', max_length=200)
-    surname = models.CharField('Surname', max_length=200)
-    position = models.CharField('Surname', max_length=200)
+    first_name = models.CharField(max_length=100, null=False, default='Unknown')
+    last_name = models.CharField(max_length=100, null=False, default='Unknown')
+    email = models.EmailField()
+    hire_date = models.DateField()
 
 class Work(models.Model):
     title = models.CharField('Title', max_length=200)
@@ -38,5 +45,12 @@ class Invoice(models.Model):
     formating_date = models.DateField('Formating Date', null=True, blank=True)
     amount = models.FloatField('Amount', max_length=11)
 
+# ---------------------------------------------------------------------------------
+
+
 class ClientAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     pass           
+
+class Profile(models.Model):
+    user = models.OneToOneField(Employee, on_delete=models.CASCADE)
+    photo = models.ImageField(upload_to='profiles/', blank=True)

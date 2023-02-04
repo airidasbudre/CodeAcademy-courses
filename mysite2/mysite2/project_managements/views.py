@@ -40,3 +40,9 @@ class ProjectsView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['projects'] = Project.objects.all()
         return context
+    
+class AboutPageView(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'about.html')
+    
+
