@@ -8,7 +8,7 @@ def index(request):
     context = {
         "num_task" : num_task,
     }
-    return render(request, 'base.html', context=context)
+    return render(request, 'index.html', context=context)
 
 @login_required
 def view_tasks(request):
