@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}To do list{% endblock %}
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+    <div>
+      <label for="{{ form.text.id_for_label }}">Task text:</label>
+      {{ form.text }}
+    </div>
+    <div>
+      <label for="{{ form.user.id_for_label }}">User:</label>
+      {{ form.user }}
+    </div>
+    <div>
+      <label for="{{ form.date.id_for_label }}">Date:</label>
+      {{ form.date }}
+    </div>
+    <input type="submit" value="Submit">
+  </form>
+{% endblock %}
