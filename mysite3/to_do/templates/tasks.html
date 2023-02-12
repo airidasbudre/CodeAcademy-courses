@@ -8,6 +8,8 @@
   {% for task in tasks %}
   <hr>
   <p>{{ task }}</p>
+  <a href="{% url 'edit_task' task.id %}" class="btn btn-primary">Edit</a>
+  <a href="{% url 'delete_task' task.id %}" class="btn btn-primary">Delete</a>
   {% endfor %}
 </ul>
 {% endblock %}

@@ -40,11 +40,11 @@ def edit_task(request, task_id):
     if request.method == 'POST':
         task.text = request.POST['text']
         task.save()
-        return redirect('view_tasks')
+        return redirect('tasks')
     return render(request, 'edit_task.html', {'task': task})
 
 @login_required
 def delete_task(request, task_id):
     task = Task.objects.get(id=task_id)
     task.delete()
-    return redirect('view_tasks')
+    return redirect('tasks')
